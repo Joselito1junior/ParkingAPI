@@ -13,10 +13,10 @@ namespace ParkingAPI.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ParkingSapceStatus = table.Column<bool>(nullable: false),
+                    ParkingSapceActive = table.Column<bool>(nullable: false),
                     ParkingStatus = table.Column<int>(nullable: false),
-                    LastOccupation = table.Column<DateTime>(nullable: false),
-                    LastVacancy = table.Column<DateTime>(nullable: false)
+                    LastOccupation = table.Column<DateTime>(nullable: true),
+                    LastVacancy = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {

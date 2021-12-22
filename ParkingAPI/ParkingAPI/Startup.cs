@@ -33,8 +33,8 @@ namespace ParkingAPI
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ParkingContext>(opt => {
-                opt.UseSqlite("Data Source=Data\\Parking.db");
+            services.AddDbContext<ParkingSpaceContext>(opt => {
+                opt.UseSqlite("Data Source=Data\\ParkingSpace.db");
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

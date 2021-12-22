@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace ParkingAPI.Data
 {
-    public class ParkingContext : DbContext
+    public class ParkingSpaceContext : DbContext
     {
-        public ParkingContext(DbContextOptions<ParkingContext> options) : base(options)
+        public ParkingSpaceContext(DbContextOptions<ParkingSpaceContext> options) : base(options)
         {
 
         }
 
-        public DbSet<Parking> Parking { get; set; }
+        public DbSet<ParkingSpace> Parking { get; set; }
     }
 }
