@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ParkingAPI.Models.Enums;
+using ParkingAPI.Helpers;
+using Newtonsoft.Json;
 
 namespace ParkingAPI.Controllers
 {
@@ -21,14 +23,19 @@ namespace ParkingAPI.Controllers
         }
 
         [HttpGet("")]
-        public ActionResult GetAll(int? numPagina, int? qtdRegistros)
+        public ActionResult GetAll(int? pageNumber, int? registerQtt)
         {
             var item = _dataBase.Parking.AsQueryable();
+            Pagination pagination = new Pagination(pageNumber.Value, registerQtt.Value, item.Count());
 
-            if(numPagina.HasValue)
+            if (pageNumber.HasValue)
             {
-                item = item.Skip((numPagina.Value - 1) * qtdRegistros.Value).Take(qtdRegistros.Value);
+                item = item.Skip((pageNumber.Value - 1) * registerQtt.Value).Take(registerQtt.Value);
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
             }
+
+            if (!pagination.IsValidPage(pageNumber.Value))
+                return NotFound();
 
             return Ok(item);
         }
