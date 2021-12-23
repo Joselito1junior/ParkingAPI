@@ -1,77 +1,72 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ParkingAPI.Data;
-using ParkingAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ParkingAPI.Models.Enums;
-using ParkingAPI.Helpers;
 using Newtonsoft.Json;
+using ParkingAPI.Helpers;
+using ParkingAPI.Models;
+using ParkingAPI.Models.Enums;
+using ParkingAPI.Repositories.Contracts;
+using System;
 
 namespace ParkingAPI.Controllers
 {
     [Route("api/parking")]
     public class ControllersParkingSpace : ControllerBase
     {
-        private readonly ParkingSpaceContext _dataBase;
+        private readonly IParkingSpaceRepository _repository;
 
-        public ControllersParkingSpace(ParkingSpaceContext dataBase)
+        public ControllersParkingSpace(IParkingSpaceRepository repository)
         {
-            _dataBase = dataBase;
+            _repository = repository;
         }
+
 
         [HttpGet("")]
-        public ActionResult GetAll(int? pageNumber, int? registerQtt)
+        public ActionResult GetAll(ParkingSpaceUrlQuery query)
         {
-            var item = _dataBase.Parking.AsQueryable();
-            Pagination pagination = new Pagination(pageNumber.Value, registerQtt.Value, item.Count());
+            var items = _repository.GetAll(query);
 
-            if (pageNumber.HasValue)
+            if (items.Pagination != null)
             {
-                item = item.Skip((pageNumber.Value - 1) * registerQtt.Value).Take(registerQtt.Value);
-                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
+                if (!items.Pagination.IsValidPage(query.PageNumber.Value))
+                    return NotFound();
             }
 
-            if (!pagination.IsValidPage(pageNumber.Value))
-                return NotFound();
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(items.Pagination));
 
-            return Ok(item);
+            return Ok(items);
+
         }
+
 
         [HttpGet("{id}")]
         public ActionResult GetOne(int id)
         {
-            ParkingSpace parkingSpace = _dataBase.Parking.Find(id);
+            ParkingSpace parkingSpace = _repository.GetOne(id);
 
             if (parkingSpace == null)
                 return StatusCode(404);
 
-            return Ok(_dataBase.Parking.Find(id));
+            return Ok(parkingSpace);
         }
 
         [HttpPost("")]
-        public ActionResult Register([FromBody]ParkingSpace parkingSpace)
+        public ActionResult Register([FromBody] ParkingSpace parkingSpace)
         {
             parkingSpace.LastVacancy = DateTime.Now;
-            _dataBase.Parking.Add(parkingSpace);
-            _dataBase.SaveChanges();
+
+            _repository.Register(parkingSpace);
+
             return Created($"api/parking/{parkingSpace.Id}", parkingSpace);
         }
 
         [HttpDelete("{id}")]
         public ActionResult Remove(int id)
         {
-            ParkingSpace parkingSpace = _dataBase.Parking.Find(id);
+            ParkingSpace parkingSpace = _repository.GetOne(id);
 
             if (parkingSpace == null)
                 return StatusCode(404);
 
-            parkingSpace.ParkingSapceActive = false;
-
-            _dataBase.Parking.Update(parkingSpace);
-            _dataBase.SaveChanges();
+            _repository.Remove(id);
 
             return NoContent();
         }
@@ -79,7 +74,7 @@ namespace ParkingAPI.Controllers
         [HttpPut("{id}")]
         public ActionResult Update(int id, [FromBody] ParkingSpace parkingSpace)
         {
-            ParkingSpace parkingSpaceUpdate = _dataBase.Parking.AsNoTracking().FirstOrDefault(a => a.Id == id);
+            ParkingSpace parkingSpaceUpdate = _repository.GetOne(id);
 
             if (parkingSpaceUpdate == null)
                 return StatusCode(404);
@@ -90,8 +85,7 @@ namespace ParkingAPI.Controllers
             parkingSpace.LastVacancy = parkingSpaceUpdate.LastVacancy;
             parkingSpace.ParkingStatus = parkingSpaceUpdate.ParkingStatus;
 
-            _dataBase.Parking.Update(parkingSpace);
-            _dataBase.SaveChanges();
+            _repository.Update(parkingSpace);
 
             return Ok();
         }
@@ -99,7 +93,7 @@ namespace ParkingAPI.Controllers
         [HttpPatch("{id}")]
         public ActionResult ControlPark(int id)
         {
-            ParkingSpace parkingSpace = _dataBase.Parking.Find(id);
+            ParkingSpace parkingSpace = _repository.GetOne(id);
 
             if (parkingSpace == null || parkingSpace.ParkingSapceActive == false)
                 return StatusCode(404);
@@ -115,8 +109,7 @@ namespace ParkingAPI.Controllers
                 parkingSpace.LastVacancy = DateTime.Now;
             }
 
-            _dataBase.Parking.Update(parkingSpace);
-            _dataBase.SaveChanges();
+            _repository.ControlPark(parkingSpace);
 
             return Ok();
         }
