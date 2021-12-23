@@ -26,16 +26,17 @@ namespace ParkingAPI.Repositories
 
             var items = _database.Parking.AsNoTracking().AsQueryable();
             
-            Pagination pagination;
+            Pagination pagination = null;
 
-            if (query.PageNumber.HasValue)
+            if (query.PageNumber.HasValue && query.RegisterQtt.HasValue)
             {
                 pagination = new Pagination(query.PageNumber.Value, query.RegisterQtt.Value, items.Count());
 
                 items = items.Skip((query.PageNumber.Value - 1) * query.RegisterQtt.Value).Take(query.RegisterQtt.Value);
 
-                list.Pagination = pagination;
             }
+
+            list.Pagination = pagination;
 
             list.AddRange(items.ToList());
 

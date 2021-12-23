@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using ParkingAPI.Repositories;
 using ParkingAPI.Repositories.Contracts;
+using AutoMapper;
+using ParkingAPI.Helpers;
 
 namespace ParkingAPI
 {
@@ -34,6 +36,14 @@ namespace ParkingAPI
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
+            //AutoMapper Config
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new DTOMapperProfile());
+            });
+            IMapper mapper = config.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddDbContext<ParkingSpaceContext>(opt => {
                 opt.UseSqlite("Data Source=Data\\ParkingSpace.db");

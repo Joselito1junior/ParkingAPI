@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "ohyzACVVz77wLlyCjSTrMnb+8eozTfgpvyMv7pgDfqbeicu153/20fsrdT+6U15riBYuj+yPBcurlhp0T1l6ng==",
+  "dgSpecHash": "buzYG1Eu7rjgv1WTULZ4m5BpiHcJZv2y9tKGIHItYQZ01eG1JLybf23kkzBOoEXOieiYlkijP0YQBlukzxUQ9Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\junio\\Documents\\API REST - ASP.NET\\Parking\\ParkingAPI\\ParkingAPI\\ParkingAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\junio\\.nuget\\packages\\automapper\\9.0.0\\automapper.9.0.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.aspnet.webapi.client\\5.2.6\\microsoft.aspnet.webapi.client.5.2.6.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.aspnetcore\\2.2.0\\microsoft.aspnetcore.2.2.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.aspnetcore.antiforgery\\2.2.0\\microsoft.aspnetcore.antiforgery.2.2.0.nupkg.sha512",
