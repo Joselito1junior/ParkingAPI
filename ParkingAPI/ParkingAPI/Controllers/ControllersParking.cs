@@ -35,7 +35,6 @@ namespace ParkingAPI.Controllers
 
             foreach(ParkingSpaceDTO parkingSpaceDTO in lista.Results)
             {
-                parkingSpaceDTO.Links = new List<LinkDTO>();
                 parkingSpaceDTO.Links.Add(new LinkDTO("self", Url.Link("NameGetOne", new { id = parkingSpaceDTO.Id }), "GET"));
             }
 
@@ -77,7 +76,6 @@ namespace ParkingAPI.Controllers
 
             ParkingSpaceDTO parkingSpaceDTO = _mapper.Map<ParkingSpace, ParkingSpaceDTO>(parkingSpace);
 
-            parkingSpaceDTO.Links = new List<LinkDTO>();
             parkingSpaceDTO.Links.Add(new LinkDTO("self", Url.Link("NameGetOne", new { id = parkingSpaceDTO.Id }), "GET"));
             parkingSpaceDTO.Links.Add(new LinkDTO("remove", Url.Link("NameRemove", new { id = parkingSpaceDTO.Id }), "DELETE"));
             parkingSpaceDTO.Links.Add(new LinkDTO("update", Url.Link("NameUpdate", new { id = parkingSpaceDTO.Id }), "PUT"));
@@ -86,14 +84,17 @@ namespace ParkingAPI.Controllers
             return Ok(parkingSpaceDTO);
         }
 
-        [HttpPost("")]
+        [HttpPost("", Name = "NameRegister")]
         public ActionResult Register([FromBody] ParkingSpace parkingSpace)
         {
             parkingSpace.LastVacancy = DateTime.Now;
 
             _repository.Register(parkingSpace);
 
-            return Created($"api/parking/{parkingSpace.Id}", parkingSpace);
+            ParkingSpaceDTO parkingSpaceDTO = _mapper.Map<ParkingSpace, ParkingSpaceDTO>(parkingSpace);
+            parkingSpaceDTO.Links.Add(new LinkDTO("self", Url.Link("NameRegister", new { id = parkingSpaceDTO.Id }), "POST"));
+
+            return Created($"api/parking/{parkingSpace.Id}", parkingSpaceDTO);
         }
 
         [HttpDelete("{id}", Name = "NameRemove")]
@@ -125,7 +126,10 @@ namespace ParkingAPI.Controllers
 
             _repository.Update(parkingSpace);
 
-            return Ok();
+            ParkingSpaceDTO parkingSpaceDTO = _mapper.Map<ParkingSpace, ParkingSpaceDTO>(parkingSpace);
+            parkingSpaceDTO.Links.Add(new LinkDTO("self", Url.Link("NameUpdate", new { id = parkingSpaceDTO.Id }), "PUT"));
+
+            return Ok(parkingSpaceDTO);
         }
 
         [HttpPatch("{id}", Name = "NameControlPark")]
