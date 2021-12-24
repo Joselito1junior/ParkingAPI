@@ -14,6 +14,7 @@ namespace ParkingAPI.Helpers
         public DTOMapperProfile()
         {
             CreateMap<ParkingSpace, ParkingSpaceDTO>();
+            CreateMap<PaginationList<ParkingSpace>, PaginationList<ParkingSpaceDTO>>();
         }
     }
 }

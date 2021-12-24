@@ -33,12 +33,11 @@ namespace ParkingAPI.Repositories
                 pagination = new Pagination(query.PageNumber.Value, query.RegisterQtt.Value, items.Count());
 
                 items = items.Skip((query.PageNumber.Value - 1) * query.RegisterQtt.Value).Take(query.RegisterQtt.Value);
-
             }
 
             list.Pagination = pagination;
 
-            list.AddRange(items.ToList());
+            list.Results.AddRange(items.ToList());
 
             return list;
         }

@@ -24,12 +24,22 @@ namespace ParkingAPI.Controllers
         }
 
         [HttpGet("", Name = "NameGetAll")]
-        public ActionResult GetAll(ParkingSpaceUrlQuery query)
+        public ActionResult GetAll([FromQuery] ParkingSpaceUrlQuery query)
         {
             var items = _repository.GetAll(query);
 
-            if (items.Count == 0)
+            if (items.Results.Count == 0)
                 return NotFound();
+
+            var lista = _mapper.Map<PaginationList<ParkingSpace>, PaginationList<ParkingSpaceDTO>>(items);
+
+            foreach(ParkingSpaceDTO parkingSpaceDTO in lista.Results)
+            {
+                parkingSpaceDTO.Links = new List<LinkDTO>();
+                parkingSpaceDTO.Links.Add(new LinkDTO("self", Url.Link("NameGetOne", new { id = parkingSpaceDTO.Id }), "GET"));
+            }
+
+            lista.Links.Add(new LinkDTO("self", Url.Link("NameGetAll", query), "GET"));
 
             if (items.Pagination != null)
             {
@@ -37,9 +47,24 @@ namespace ParkingAPI.Controllers
 
                 if (!items.Pagination.IsValidPage(query.PageNumber.Value))
                     return NotFound();
+                else
+                {
+                    if((query.PageNumber + 1) <= items.Pagination.TotalPages)
+                    {
+                        ParkingSpaceUrlQuery nextPage = new ParkingSpaceUrlQuery { PageNumber = query.PageNumber + 1, RegisterQtt = query.RegisterQtt };
+                        lista.Links.Add(new LinkDTO("next", Url.Link("NameGetAll", nextPage), "GET"));
+                    }
+                    
+                    if((query.PageNumber - 1) > 0)
+                    {
+                        ParkingSpaceUrlQuery prevPage = new ParkingSpaceUrlQuery { PageNumber = query.PageNumber - 1, RegisterQtt = query.RegisterQtt };
+                        lista.Links.Add(new LinkDTO("prev", Url.Link("NameGetAll", prevPage), "GET"));
+                    }
+
+                }
             }
 
-            return Ok(items);
+            return Ok(lista);
         }
 
         [HttpGet("{id}", Name = "NameGetOne")]

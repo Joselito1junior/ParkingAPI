@@ -1,7 +1,6 @@
 ﻿using ParkingAPI.Models.Enums;
 using System;
 
-
 namespace ParkingAPI.Models.DTO
 {
     public class ParkingSpaceDTO : BaseDTO
