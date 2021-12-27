@@ -1,9 +1,9 @@
-﻿using ParkingAPI.Models.Enums;
+﻿using ParkingAPI.V1.Models.Enums;
 using System;
 
-namespace ParkingAPI.Models.DTO
+namespace ParkingAPI.V1.Models
 {
-    public class ParkingSpaceDTO : BaseDTO
+    public class ParkingSpace
     {
         public int Id { get; set; }
         public bool ParkingSapceActive { get; set; }

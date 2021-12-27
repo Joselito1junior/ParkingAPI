@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ParkingAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ParkingAPI.V1.Models;
 
 namespace ParkingAPI.Data
 {

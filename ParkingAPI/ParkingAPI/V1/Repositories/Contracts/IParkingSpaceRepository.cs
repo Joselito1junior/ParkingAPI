@@ -1,7 +1,7 @@
 ﻿using ParkingAPI.Helpers;
-using ParkingAPI.Models;
+using ParkingAPI.V1.Models;
 
-namespace ParkingAPI.Repositories.Contracts
+namespace ParkingAPI.V1.Repositories.Contracts
 {
     public interface IParkingSpaceRepository
     {

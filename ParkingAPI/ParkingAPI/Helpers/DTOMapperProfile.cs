@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using ParkingAPI.Models;
-using ParkingAPI.Models.DTO;
-using ParkingAPI.Models.Enums;
+using ParkingAPI.V1.Models;
+using ParkingAPI.V1.Models.DTO;
+using ParkingAPI.V1.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

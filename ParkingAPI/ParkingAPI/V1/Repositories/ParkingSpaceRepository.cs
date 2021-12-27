@@ -1,14 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ParkingAPI.Data;
 using ParkingAPI.Helpers;
-using ParkingAPI.Models;
-using ParkingAPI.Repositories.Contracts;
-using System;
-using System.Collections.Generic;
+using ParkingAPI.V1.Models;
+using ParkingAPI.V1.Repositories.Contracts;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace ParkingAPI.Repositories
+
+namespace ParkingAPI.V1.Repositories
 {
     public class ParkingSpaceRepository : IParkingSpaceRepository
     {

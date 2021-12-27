@@ -11,10 +11,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ParkingAPI.Repositories;
-using ParkingAPI.Repositories.Contracts;
+using ParkingAPI.V1.Repositories;
+using ParkingAPI.V1.Repositories.Contracts;
 using AutoMapper;
 using ParkingAPI.Helpers;
+using Microsoft.Extensions.PlatformAbstractions;
+using System.IO;
 
 namespace ParkingAPI
 {
@@ -45,12 +47,32 @@ namespace ParkingAPI
             IMapper mapper = config.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddDbContext<ParkingSpaceContext>(opt => {
+            services.AddDbContext<ParkingSpaceContext>(opt => 
+            {
                 opt.UseSqlite("Data Source=Data\\ParkingSpace.db");
             });
 
             services.AddScoped<IParkingSpaceRepository, ParkingSpaceRepository>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddApiVersioning(cfg =>
+            {
+                cfg.ReportApiVersions = true;
+                //cfg.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+            });
+
+            services.AddSwaggerGen(cfg =>
+            {
+                cfg.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info()
+                {
+                    Title = "ParkingAPI - v1,",
+                    Version = "v1"
+                });
+
+                var ProjectPath = PlatformServices.Default.Application.ApplicationBasePath;
+                var ProjectName = $"{PlatformServices.Default.Application.ApplicationName}.xml";
+                var CommentsPathArchiveXML = Path.Combine(ProjectPath, ProjectName);
+                cfg.IncludeXmlComments(CommentsPathArchiveXML);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,6 +94,13 @@ namespace ParkingAPI
             app.UseCookiePolicy();
 
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(cfg => 
+            {
+                cfg.SwaggerEndpoint("/swagger/v1/swagger.json", "ParkingAPI");
+                cfg.RoutePrefix = "";
+            });
         }
     }
 }

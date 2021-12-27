@@ -1,4 +1,4 @@
-﻿namespace ParkingAPI.Models.Enums
+﻿namespace ParkingAPI.V1.Models.Enums
 {
     public enum ParkingStatus : int
     {

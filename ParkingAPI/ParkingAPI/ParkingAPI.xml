@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ParkingAPI</name>
+    </assembly>
+    <members>
+        <member name="M:ParkingAPI.V1.Controllers.ControllersParkingSpace.GetAll(ParkingAPI.Helpers.ParkingSpaceUrlQuery)">
+            <summary>
+            Oeração que retorna do banco de dados todas as vagas existentes, sejam elas ativas ou desativadas
+            </summary>
+            <param name="query"> Usado para paginação </param>
+            <returns> Listagem das vagas cadastradas </returns>
+        </member>
+        <member name="M:ParkingAPI.V1.Controllers.ControllersParkingSpace.GetOne(System.Int32)">
+            <summary>
+                Solicita as informações relativa a apenas uma vaga.
+            </summary>
+            <param name="id"> Código identificador </param>
+            <returns> Retorna um objeto ParkingSpace </returns>
+        </member>
+        <member name="M:ParkingAPI.V1.Controllers.ControllersParkingSpace.Register(ParkingAPI.V1.Models.ParkingSpace)">
+            <summary>
+                Operacão que cadastra uma nova vaga para o estacionamento
+            </summary>
+            <param name="parkingSpace"> Um objeto ParkingSpace</param>
+            <returns> Retorna o objeto ParkingSpace com seu ID</returns>
+        </member>
+        <member name="M:ParkingAPI.V1.Controllers.ControllersParkingSpace.Remove(System.Int32)">
+            <summary>
+                Realiza a desativacao de uma vaga no sistema.
+            </summary>
+            <param name="id"> Código identificador da vaga</param>
+            <returns></returns>
+        </member>
+        <member name="M:ParkingAPI.V1.Controllers.ControllersParkingSpace.Update(System.Int32,ParkingAPI.V1.Models.ParkingSpace)">
+            <summary>
+                Realiza a atualização relacionada a ativacão e desativação de uma vaga específica
+            </summary>
+            <param name="id"> Código identificador da vaga a ser alterada </param>
+            <param name="parkingSpace"> Objeto ParkingSpace com os campos para alteracao</param>
+            <returns></returns>
+        </member>
+        <member name="M:ParkingAPI.V1.Controllers.ControllersParkingSpace.ControlPark(System.Int32)">
+            <summary>
+                Realiza o controle de ocupação da vaga.
+            </summary>
+            <param name="id"> Código identificador da vaga que será manipulada</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

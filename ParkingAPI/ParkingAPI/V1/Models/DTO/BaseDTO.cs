@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ParkingAPI.Models.DTO
+namespace ParkingAPI.V1.Models.DTO
 {
     public class BaseDTO
     {
