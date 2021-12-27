@@ -42,7 +42,7 @@
         </member>
         <member name="M:ParkingAPI.V1.Controllers.ControllersParkingSpace.ControlPark(System.Int32)">
             <summary>
-                Realiza o controle de ocupação da vaga.
+                Realiza o controle de ocupação da vaga modificando o estado atual ao ser chamada.
             </summary>
             <param name="id"> Código identificador da vaga que será manipulada</param>
             <returns></returns>

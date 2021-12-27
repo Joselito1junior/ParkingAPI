@@ -110,6 +110,7 @@ namespace ParkingAPI.V1.Controllers
                 return BadRequest();
 
             parkingSpace.LastVacancy = DateTime.Now;
+            parkingSpace.LastOccupation = null;
 
             _repository.Register(parkingSpace);
 
@@ -155,6 +156,9 @@ namespace ParkingAPI.V1.Controllers
             if (parkingSpace == null)
                 return BadRequest();
 
+            if (parkingSpace.Id < 1)
+                return NotFound();
+
             parkingSpace.Id = id;
 
             parkingSpace.LastOccupation = parkingSpaceUpdate.LastOccupation;
@@ -171,7 +175,7 @@ namespace ParkingAPI.V1.Controllers
 
 
         /// <summary>
-        ///     Realiza o controle de ocupação da vaga.
+        ///     Realiza o controle de ocupação da vaga modificando o estado atual ao ser chamada.
         /// </summary>
         /// <param name="id"> Código identificador da vaga que será manipulada</param>
         /// <returns></returns>
